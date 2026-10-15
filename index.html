@@ -1,0 +1,664 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Assistente Claudenir</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Claudenir">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#16191f">
+<style>
+
+:root{
+  font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;
+  --bg1: #252a33;
+  --bg2: #101216;
+  --page: #16191f;
+  --top1:#242730;
+  --top2:#17191f;
+  --top-border:#30343c;
+  --text:#f7f7f9;
+  --text-soft:#dfe3ea;
+  --muted:#9da3b0;
+  --panel:#22262e;
+  --panel-border:#343841;
+  --panel-alt:#272c34;
+  --field:#20242b;
+  --field-border:#414650;
+  --btn:#b82b35;
+  --btn-hover:#d23743;
+  --btn-text:#ffffff;
+  --minor:#333841;
+  --minor-text:#ffffff;
+  --outline:#555b65;
+  --tile-border:#343941;
+  --pill:#414852;
+  --pill-text:#e5e5e7;
+  --pill-red:#532b31;
+  --pill-red-text:#f7adb3;
+  --nav:#1d2027;
+  --nav-border:#333842;
+  --nav-text:#9097a5;
+  --nav-active:#f1747e;
+  --notice:#282c34;
+  --notice-border:#c63d48;
+  --toast-bg:#eeeeee;
+  --toast-text:#222222;
+  --hero1:#752329;
+  --hero2:#b42d38;
+  --hero-border:#b4313b;
+  --hero-button-bg:#ffffff;
+  --hero-button-text:#90262e;
+  --shadow:0 0 80px #0006;
+  --top-shadow:none;
+  --page-border:none;
+}
+body.theme-light{
+  --bg1: #edf1f6;
+  --bg2: #dfe6ef;
+  --page: #fcfdff;
+  --top1:#ffffff;
+  --top2:#f4f7fb;
+  --top-border:#d7dee8;
+  --text:#1d2430;
+  --text-soft:#2e3747;
+  --muted:#667284;
+  --panel:#ffffff;
+  --panel-border:#d7dee8;
+  --panel-alt:#f8fafc;
+  --field:#ffffff;
+  --field-border:#cbd5e1;
+  --btn:#b82b35;
+  --btn-hover:#d23743;
+  --btn-text:#ffffff;
+  --minor:#edf2f7;
+  --minor-text:#273041;
+  --outline:#c2cad6;
+  --tile-border:#d7dee8;
+  --pill:#eef2f7;
+  --pill-text:#3b4659;
+  --pill-red:#ffe2e5;
+  --pill-red-text:#a12e37;
+  --nav:#ffffff;
+  --nav-border:#d7dee8;
+  --nav-text:#738094;
+  --nav-active:#b82b35;
+  --notice:#f8fafc;
+  --notice-border:#c63d48;
+  --toast-bg:#1f2937;
+  --toast-text:#ffffff;
+  --hero1:#ffe7ea;
+  --hero2:#ffd7dc;
+  --hero-border:#f0b2bb;
+  --hero-button-bg:#b82b35;
+  --hero-button-text:#ffffff;
+  --shadow:0 18px 50px rgba(17,24,39,.12);
+  --top-shadow:0 8px 24px rgba(15,23,42,.05);
+  --page-border:1px solid #e5eaf1;
+}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at top,var(--bg1),var(--bg2) 60%);min-height:100vh;color:var(--text)}
+.page{max-width:440px;margin:0 auto;background:var(--page);min-height:100dvh;position:relative;padding-bottom:97px;box-shadow:var(--shadow);border:var(--page-border)}
+.top{padding:18px 22px 16px;background:linear-gradient(135deg,var(--top1),var(--top2));border-bottom:1px solid var(--top-border);display:flex;align-items:center;justify-content:space-between;gap:10px;box-shadow:var(--top-shadow);position:sticky;top:0;z-index:3}
+.brand-wrap{display:flex;align-items:center;gap:12px;min-width:0}
+.brand-logo{display:block;width:110px;height:70px;flex:0 0 auto;object-fit:contain;object-position:center;background:#ffffff;border-radius:10px;padding:5px}
+.brand-sub{font-size:10px;font-weight:800;letter-spacing:.7px;color:var(--muted);text-transform:uppercase;white-space:nowrap}
+.avatar{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#505865,#303845);color:#f2f4f7;font-weight:800;font-size:12px;flex:0 0 auto}
+.theme-switch{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.theme-chip{font-size:11px;padding:7px 10px;border-radius:999px;border:1px solid var(--panel-border);background:var(--panel);color:var(--text-soft);cursor:pointer;font-weight:800}
+.theme-chip.active{background:var(--btn);color:#fff;border-color:var(--btn)}
+.screen{display:none;padding:23px 20px}
+.screen.active{display:block}
+.eyebrow{color:var(--muted);text-transform:uppercase;letter-spacing:1.6px;font-size:10px;font-weight:800;margin-bottom:8px}
+h1{font-size:26px;line-height:1.12;margin:0 0 10px;color:var(--text)}
+h2{font-size:17px;margin:0 0 16px;color:var(--text)}
+.muted{color:var(--muted);font-size:13px;line-height:1.5}
+.panel{padding:17px;border:1px solid var(--panel-border);border-radius:17px;background:var(--panel);margin:15px 0}
+.main-btn,.minor-btn{border:0;border-radius:12px;cursor:pointer;font-weight:750;letter-spacing:.1px}
+.main-btn{background:var(--btn);color:var(--btn-text);padding:14px 18px;width:100%;font-size:14px}
+.main-btn:hover{background:var(--btn-hover)}
+.minor-btn{background:var(--minor);color:var(--minor-text);padding:11px 13px}
+.outline{border:1px solid var(--outline);background:transparent;color:var(--text-soft)}
+.row{display:flex;align-items:center;justify-content:space-between;gap:9px}
+.mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.tile{background:var(--panel-alt);border-radius:15px;padding:16px;cursor:pointer;border:1px solid var(--tile-border);min-height:116px;color:var(--text)}
+.tile strong{display:block;margin-top:12px;font-size:14px}
+.tile small{color:var(--muted)}
+.ico{font-size:25px}
+.pill{font-size:10px;border-radius:20px;padding:6px 9px;background:var(--pill);color:var(--pill-text);white-space:nowrap}
+.pill.red{background:var(--pill-red);color:var(--pill-red-text)}
+.idea{width:100%;background:var(--panel);border:1px solid var(--tile-border);text-align:left;color:var(--text);border-radius:14px;padding:14px;cursor:pointer;margin:8px 0}
+.idea strong{font-size:14px}
+.idea p{margin:6px 0;color:var(--muted);font-size:12px}
+.idea .row{margin-top:11px}
+.tabs{display:flex;gap:6px;margin:17px 0}
+.tab{padding:11px 6px;flex:1;background:var(--panel-alt);color:var(--text-soft);border:1px solid var(--panel-border);border-radius:10px;cursor:pointer;font-size:12px;font-weight:800}
+.tab.selected{background:var(--btn);color:white;border-color:var(--btn)}
+input,textarea,select{width:100%;background:var(--field);color:var(--text);border:1px solid var(--field-border);border-radius:12px;padding:13px;outline:none;font:inherit;font-size:14px}
+textarea{min-height:140px;resize:vertical}
+label{display:block;color:var(--text-soft);font-size:12px;margin:15px 0 8px;font-weight:750}
+.field{margin:11px 0}
+.rec{display:flex;align-items:center;flex-direction:column;gap:16px;padding:24px 10px}
+.record-circle{width:91px;height:91px;border-radius:50%;background:var(--btn);display:grid;place-items:center;font-size:38px;border:8px solid color-mix(in srgb, var(--btn) 20%, transparent);cursor:pointer;color:#fff}
+.record-circle.on{box-shadow:0 0 0 12px color-mix(in srgb, var(--btn) 25%, transparent);animation:pulse 1s infinite alternate}
+@keyframes pulse{to{box-shadow:0 0 0 22px color-mix(in srgb, var(--btn) 8%, transparent)}}
+.timer{font-size:28px;letter-spacing:2px;font-variant-numeric:tabular-nums;color:var(--text)}
+.bottom{position:absolute;bottom:0;left:0;right:0;background:var(--nav);border-top:1px solid var(--nav-border);display:flex;justify-content:space-around;padding:10px 5px max(12px,env(safe-area-inset-bottom));position:fixed;max-width:440px;margin:auto;z-index:2}
+.nav{background:none;border:0;color:var(--nav-text);font-size:10px;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;width:70px}
+.nav span{font-size:23px}
+.nav.active{color:var(--nav-active)}
+.nav.central span{color:#fff;background:var(--btn);border-radius:14px;padding:9px 15px;margin-top:-21px;font-size:25px}
+.section-head{display:flex;align-items:center;justify-content:space-between;margin-top:22px}
+.ghost{background:none;border:0;color:var(--nav-active);cursor:pointer;font-weight:700;font-size:12px}
+.back{border:0;background:transparent;color:var(--text-soft);padding:0;font-weight:700;cursor:pointer;margin-bottom:23px}
+.notice{font-size:11px;color:var(--muted);background:var(--notice);border-left:3px solid var(--notice-border);border-radius:8px;padding:12px;margin-top:16px;line-height:1.5}
+.empty{text-align:center;color:var(--muted);padding:35px 10px}
+.tags{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.tags .pill{padding:8px 11px}
+.detail-text{line-height:1.7;color:var(--text-soft);font-size:13px;white-space:pre-wrap}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.actions button{font-size:12px}
+.divider{border-top:1px solid var(--panel-border);margin:20px 0}
+.hidden{display:none!important}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:100px;background:var(--toast-bg);color:var(--toast-text);padding:12px 16px;border-radius:10px;font-size:12px;box-shadow:0 8px 20px #0005;z-index:10;max-width:390px;width:85%;display:none;text-align:center}
+.hero-panel{background:linear-gradient(120deg,var(--hero1),var(--hero2));border-color:var(--hero-border)}
+.hero-eyebrow{color:color-mix(in srgb, var(--text) 55%, transparent)}
+.hero-button{background:var(--hero-button-bg)!important;color:var(--hero-button-text)!important}
+@media (max-width:390px){
+  .top{padding:16px 16px 14px}
+  .brand-logo{width:88px;height:60px}
+  .brand-sub{display:none}
+}
+
+.top{padding-top:max(18px,env(safe-area-inset-top))}
+.banner{border:1px solid var(--notice-border);background:var(--notice);border-radius:12px;padding:12px 14px;margin:12px 0;font-size:13px;line-height:1.5;color:var(--text-soft)}
+.banner .row{margin-top:10px;justify-content:flex-start;flex-wrap:wrap}
+.kv{display:flex;justify-content:space-between;gap:12px;font-size:13px;padding:7px 0;border-bottom:1px solid var(--panel-border);color:var(--text-soft)}
+.kv span:last-child{color:var(--muted);text-align:right;min-width:0;overflow-wrap:anywhere}
+.logbox{font:11px/1.5 ui-monospace,Menlo,monospace;background:var(--field);border:1px solid var(--field-border);border-radius:10px;padding:10px;max-height:180px;overflow:auto;white-space:pre-wrap;color:var(--text-soft);margin-top:10px}
+.danger{color:var(--pill-red-text)}
+.warnline{color:var(--pill-red-text);font-size:12px;min-height:16px}
+</style>
+</head>
+<body class="">
+<div class="page">
+<header class="top">
+  <div class="brand-wrap">
+    <img class="brand-logo" src="logo_pedra_tech_oficial.png" alt="Logo oficial Pedra Tech">
+    <div class="brand-sub">Teste V1.8</div>
+  </div>
+  <div class="avatar">CL</div>
+</header>
+
+<section class="screen active" id="inicio">
+  <div class="eyebrow">Seu espaço de criação</div>
+  <h1>Olá, Claudenir!</h1>
+  <p class="muted">Uma ideia pode surgir a qualquer momento. Grave agora, organize depois.</p>
+  <div class="panel hero-panel"><div class="eyebrow hero-eyebrow">Captura rápida</div><h2 style="margin:0 0 12px">O que você imaginou hoje?</h2><button class="main-btn hero-button" onclick="go('nova')">🎙️ Gravar nova ideia</button></div>
+  <div class="mini-grid">
+    <div class="tile" onclick="go('biblioteca')"><span class="ico">💡</span><strong>Minhas ideias</strong><small id="nideas">0 ideias</small></div>
+    <div class="tile" onclick="go('projetos')"><span class="ico">📁</span><strong>Projetos</strong><small id="nprojetos">0 em andamento</small></div>
+  </div>
+  <div class="section-head"><h2>Ideias recentes</h2><button class="ghost" onclick="go('biblioteca')">Ver todas →</button></div>
+  <div id="recentes"></div>
+</section>
+
+<section class="screen" id="biblioteca">
+  <div class="eyebrow">Acervo pessoal</div><h1>Minhas ideias</h1>
+  <p class="muted">Seus áudios originais e a evolução de cada ideia no mesmo lugar.</p>
+  <input id="search" placeholder="🔎  Pesquisar título ou anotação" oninput="renderIdeas()">
+  <div class="tabs"><button class="tab selected" id="flt-todas" onclick="filterSet('todas')">Todas</button><button class="tab" id="flt-novas" onclick="filterSet('novas')">Novas</button><button class="tab" id="flt-projetos" onclick="filterSet('projetos')">Projetos</button><button class="tab" id="flt-arquivadas" onclick="filterSet('arquivadas')">Arquivadas</button></div>
+  <div id="lista"></div>
+</section>
+
+<section class="screen" id="nova">
+  <div class="eyebrow">Registrar ideia</div><h1>Nova ideia</h1>
+  <p class="muted">Fale. Você não precisa organizar nada agora.</p>
+  <div id="recoverBanner" class="banner hidden"></div>
+  <div id="errBanner" class="banner hidden"></div>
+
+  <div id="recPanel" class="panel rec">
+    <div class="record-circle" id="mic" role="button" aria-label="Gravar" onclick="micTap()">🎙️</div>
+    <div class="timer" id="counter">00:00</div>
+    <strong id="recstatus">Toque para gravar</strong>
+    <div class="warnline" id="recWarn"></div>
+    <div class="row" style="justify-content:center;flex-wrap:wrap"><button type="button" class="minor-btn" id="finishRecord" onclick="stopRec()" disabled>■ Encerrar</button></div>
+    <small class="muted" style="text-align:center">Mantenha esta tela aberta enquanto grava. A gravação é guardada aos poucos neste aparelho e pode ser recuperada se o app fechar.</small>
+  </div>
+
+  <div id="reviewPanel" class="panel hidden">
+    <h2 style="margin-bottom:8px">Gravação pronta · <span id="reviewDur"></span></h2>
+    <p class="muted" id="reviewNote" style="margin:0 0 10px"></p>
+    <audio id="reviewAudio" controls style="width:100%"></audio>
+    <label for="titleInput">Título (opcional)</label>
+    <input id="titleInput" placeholder="Pode deixar em branco">
+    <label for="noteInput">Anotação (opcional)</label>
+    <textarea id="noteInput" style="min-height:80px" placeholder="Algo que ajude a lembrar do contexto…"></textarea>
+    <button class="main-btn" style="margin-top:16px" id="saveBtn" onclick="saveIdea()">Salvar ideia</button>
+    <button class="minor-btn outline" style="margin-top:10px;width:100%" onclick="discardReview()">Descartar gravação</button>
+  </div>
+</section>
+
+<section class="screen" id="detalhe">
+  <button class="back" onclick="go('biblioteca')">← Voltar às ideias</button>
+  <div class="eyebrow">Registro de ideia</div>
+  <h1 id="dtTitle"></h1>
+  <div class="tags" id="dtTags"></div>
+  <div class="panel">
+    <h2>🎙️ Áudio original</h2>
+    <div id="audioHolder"><audio id="savedAudio" controls style="width:100%"></audio></div>
+    <p class="muted" id="audioMissing" style="display:none">O arquivo de áudio não foi encontrado neste aparelho.</p>
+    <button type="button" class="minor-btn outline" style="margin-top:12px;width:100%" onclick="shareAudio()">↗ Salvar / compartilhar áudio</button>
+  </div>
+  <div class="panel">
+    <h2>Título e anotação</h2>
+    <label for="editTitle" style="margin-top:0">Título</label><input id="editTitle">
+    <label for="editNote">Anotação</label><textarea id="editNote" style="min-height:90px"></textarea>
+    <button class="minor-btn" style="margin-top:12px" onclick="saveEdits()">Salvar alterações</button>
+  </div>
+  <label for="statusSelect">Etapa de desenvolvimento</label>
+  <select id="statusSelect" onchange="updateStatus(this.value)"><option>Nova</option><option>Organizada</option><option>Em análise</option><option>Em desenvolvimento</option><option>Concluída</option><option>Arquivada</option></select>
+  <label>Encaminhar</label>
+  <div class="actions"><button class="minor-btn" onclick="copyMessage('ChatGPT')">🤖 Copiar texto p/ ChatGPT</button><button class="minor-btn" onclick="copyMessage('Cláudio')">👤 Copiar texto p/ Cláudio</button></div>
+  <div class="notice">Os botões copiam uma mensagem com título, data, status e anotação. Para enviar o áudio, use “Salvar / compartilhar áudio”. Nada é enviado automaticamente.</div>
+  <div class="divider"></div>
+  <button class="minor-btn outline" style="width:100%" onclick="deleteIdea()"><span class="danger">Excluir esta ideia e o áudio</span></button>
+</section>
+
+<section class="screen" id="projetos">
+  <div class="eyebrow">Acompanhamento</div><h1>Projetos</h1>
+  <p class="muted">Ideias que já entraram em análise, desenvolvimento ou foram concluídas.</p>
+  <div id="projectList"></div>
+</section>
+
+<section class="screen" id="config">
+  <div class="eyebrow">Preferências</div><h1>Configurações</h1>
+  <div class="panel"><strong>👤 Claudenir</strong><p class="muted" style="margin:6px 0 0">Perfil principal · versão de teste, sem login</p></div>
+  <div class="panel"><h2>Aparência</h2><p class="muted">Por padrão, o aplicativo acompanha a aparência do celular.</p><label for="themePreference">Tema do aplicativo</label><select id="themePreference" onchange="setThemePreference(this.value)"><option value="system">Automático · celular</option><option value="light">Claro</option><option value="dark">Escuro</option><option value="schedule">Por horário · claro 6h, escuro 18h</option></select></div>
+  <div class="panel"><h2>Armazenamento</h2>
+    <div class="kv"><span>Ideias salvas</span><span id="stCount">–</span></div>
+    <div class="kv"><span>Espaço dos áudios</span><span id="stAudio">–</span></div>
+    <div class="kv"><span>Uso do navegador</span><span id="stUsage">–</span></div>
+    <div class="kv"><span>Proteção contra limpeza</span><span id="stPersist">–</span></div>
+    <button class="minor-btn" style="margin-top:12px;width:100%" onclick="shareAll()">↗ Compartilhar todos os áudios (backup)</button>
+    <p class="muted" style="margin-top:10px">Os dados ficam só neste aparelho, sem criptografia e sem backup automático. O Safari pode apagar dados de sites pouco usados; instalar na Tela de Início e fazer backup dos áudios importantes reduz o risco.</p>
+  </div>
+  <div class="panel"><h2>Diagnóstico de testes</h2>
+    <div class="kv"><span>Versão</span><span id="dgVersion">–</span></div>
+    <div class="kv"><span>Instalado na Tela de Início</span><span id="dgStandalone">–</span></div>
+    <div class="kv"><span>HTTPS</span><span id="dgSecure">–</span></div>
+    <div class="kv"><span>Formato de gravação</span><span id="dgMime">–</span></div>
+    <div class="kv"><span>Funciona sem internet</span><span id="dgSw">–</span></div>
+    <div class="logbox" id="logBox"></div>
+    <div class="row" style="margin-top:10px;justify-content:flex-start;flex-wrap:wrap"><button class="minor-btn" onclick="copyDiag()">Copiar diagnóstico</button><button class="minor-btn outline" onclick="clearLog()">Limpar registro</button></div>
+  </div>
+  <div class="panel"><h2>Zona de risco</h2><p class="muted">Apaga todas as ideias e áudios deste aparelho.</p><button class="minor-btn outline" style="width:100%" onclick="wipeAll()"><span class="danger">Apagar todos os dados</span></button></div>
+  <div class="notice">Versão de TESTE em navegador. Não use para informações confidenciais. Transcrição por IA, login e nuvem não fazem parte desta versão.</div>
+</section>
+
+<nav class="bottom">
+  <button class="nav active" data-page="inicio" onclick="go('inicio')"><span>⌂</span>Início</button>
+  <button class="nav" data-page="biblioteca" onclick="go('biblioteca')"><span>💡</span>Ideias</button>
+  <button class="nav central" data-page="nova" onclick="go('nova')"><span>＋</span>Nova</button>
+  <button class="nav" data-page="projetos" onclick="go('projetos')"><span>📁</span>Projetos</button>
+  <button class="nav" data-page="config" onclick="go('config')"><span>⚙</span>Ajustes</button>
+</nav>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+'use strict';
+const VERSION='1.8.0';
+const KEY_IDEAS='claudenir_v18_ideas',KEY_THEME='claudenir_v18_theme',KEY_LOG='claudenir_v18_log';
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const lsGet=k=>{try{return localStorage.getItem(k)}catch{return null}};
+const lsSet=(k,v)=>{try{localStorage.setItem(k,v);return true}catch{return false}};
+
+/* ---------- registro de eventos (para os testes) ---------- */
+function log(msg){try{const a=JSON.parse(lsGet(KEY_LOG)||'[]');a.push(new Date().toLocaleString('pt-BR')+'  '+msg);lsSet(KEY_LOG,JSON.stringify(a.slice(-150)))}catch{}}
+window.addEventListener('error',e=>log('ERRO JS: '+e.message));
+window.addEventListener('unhandledrejection',e=>log('PROMESSA: '+((e.reason&&e.reason.message)||e.reason)));
+
+/* ---------- banco local (áudios + pedaços da gravação em andamento) ---------- */
+let dbp=null;
+function db(){
+ if(!dbp)dbp=new Promise((res,rej)=>{
+  const r=indexedDB.open('claudenir-v18',1);
+  r.onupgradeneeded=()=>{const d=r.result;d.createObjectStore('audios');d.createObjectStore('chunks',{keyPath:'k'});d.createObjectStore('sessions',{keyPath:'sid'})};
+  r.onsuccess=()=>res(r.result);r.onerror=()=>{dbp=null;rej(r.error)};
+ });
+ return dbp;
+}
+function tx(store,mode,fn){
+ return db().then(d=>new Promise((res,rej)=>{
+  const t=d.transaction(store,mode);let out;
+  try{out=fn(t.objectStore(store))}catch(e){rej(e);return}
+  t.oncomplete=()=>res(out&&'result' in out?out.result:undefined);
+  t.onerror=()=>rej(t.error);t.onabort=()=>rej(t.error||new Error('transação cancelada'));
+ }));
+}
+const putAudio=(id,blob)=>tx('audios','readwrite',s=>s.put(blob,String(id)));
+const getAudio=id=>tx('audios','readonly',s=>s.get(String(id)));
+const delAudio=id=>tx('audios','readwrite',s=>s.delete(String(id)));
+const chunkRange=sid=>IDBKeyRange.bound(sid+':',sid+':￿');
+const cleanupSession=sid=>Promise.all([tx('chunks','readwrite',s=>s.delete(chunkRange(sid))),tx('sessions','readwrite',s=>s.delete(sid))]).catch(e=>log('limpeza da sessão: '+e));
+
+/* ---------- dados das ideias ---------- */
+let ideas=load(),current=null,filter='todas';
+function load(){try{const v=JSON.parse(lsGet(KEY_IDEAS)||'[]');return Array.isArray(v)?v:[]}catch{return []}}
+function persist(){if(!lsSet(KEY_IDEAS,JSON.stringify(ideas)))throw new Error('Não foi possível gravar os dados (armazenamento cheio ou bloqueado).')}
+const ideaTitle=x=>x.title&&x.title.trim()?x.title.trim():'Áudio de '+new Date(x.id).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+const fmtClock=ms=>{const t=Math.max(0,Math.floor(ms/1000));const h=Math.floor(t/3600),m=Math.floor(t%3600/60),s=t%60;return (h?String(h).padStart(2,'0')+':':'')+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0')};
+const fmtMB=b=>b>=1048576?(b/1048576).toFixed(1)+' MB':Math.max(1,Math.round(b/1024))+' KB';
+const fmtDate=id=>new Date(id).toLocaleDateString('pt-BR');
+
+/* ---------- navegação ---------- */
+const recording=()=>['recording','paused','stopping'].includes(R.state);
+function go(p){
+ if(recording()&&p!=='nova'){toast('Encerre a gravação antes de sair desta tela.');return}
+ document.querySelectorAll('.screen').forEach(e=>e.classList.toggle('active',e.id===p));
+ document.querySelectorAll('.nav').forEach(e=>e.classList.toggle('active',e.dataset.page===p));
+ if(p==='biblioteca')renderIdeas();if(p==='inicio')renderHome();if(p==='projetos')renderProjects();if(p==='config')renderConfig();if(p==='nova')renderRec();
+ window.scrollTo(0,0);
+}
+function ideaCard(x){
+ const sub=x.note?esc(x.note.slice(0,85))+(x.note.length>85?'…':''):'Sem anotação';
+ return `<button class="idea" onclick="openIdea(${x.id})"><div class="row"><strong>${esc(ideaTitle(x))}</strong><span class="pill">${fmtClock(x.durationMs||0)}</span></div><p>${sub}</p><div class="row"><small style="color:var(--muted)">${fmtDate(x.id)} · ${fmtMB(x.sizeBytes||0)}</small><span class="pill ${x.status==='Nova'?'red':''}">${esc(x.status)}</span></div></button>`;
+}
+const isProject=x=>['Em análise','Em desenvolvimento','Concluída'].includes(x.status);
+function renderHome(){
+ $('nideas').textContent=`${ideas.length} ${ideas.length===1?'ideia registrada':'ideias registradas'}`;
+ $('nprojetos').textContent=`${ideas.filter(isProject).length} em andamento ou concluídos`;
+ $('recentes').innerHTML=ideas.slice(0,3).map(ideaCard).join('')||'<p class="empty">Nenhuma ideia ainda. Toque em “Gravar nova ideia”.</p>';
+}
+function renderIdeas(){
+ const q=$('search').value.toLocaleLowerCase('pt-BR');
+ const arr=ideas.filter(x=>(ideaTitle(x)+' '+(x.note||'')).toLocaleLowerCase('pt-BR').includes(q)&&(filter==='todas'?x.status!=='Arquivada':filter==='novas'?x.status==='Nova':filter==='projetos'?isProject(x):x.status==='Arquivada'));
+ $('lista').innerHTML=arr.map(ideaCard).join('')||`<p class="empty">${ideas.length?'Nada encontrado com esse filtro.':'Nenhuma ideia registrada ainda.'}</p>`;
+}
+function filterSet(v){filter=v;document.querySelectorAll('[id^=flt-]').forEach(e=>e.classList.toggle('selected',e.id==='flt-'+v));renderIdeas()}
+function renderProjects(){$('projectList').innerHTML=ideas.filter(isProject).map(ideaCard).join('')||'<p class="empty">Nenhuma ideia em acompanhamento.</p>'}
+
+/* ---------- gravador ---------- */
+const R={state:'idle',stream:null,mr:null,sid:null,idx:0,mime:'',mem:[],segStart:0,acc:0,timer:null,wake:null,writeQ:Promise.resolve(),lost:false,muted:false,finalized:false};
+const review={blob:null,ms:0,url:null,sid:null,note:''};
+const elapsed=()=>R.acc+(R.state==='recording'?Date.now()-R.segStart:0);
+
+function showErr(msg){const b=$('errBanner');b.textContent=msg;b.classList.remove('hidden');log('AVISO: '+msg)}
+function hideErr(){$('errBanner').classList.add('hidden')}
+
+function renderRec(){
+ const hasReview=!!review.blob;
+ $('recPanel').classList.toggle('hidden',hasReview);
+ $('reviewPanel').classList.toggle('hidden',!hasReview);
+ const on=R.state==='recording';
+ $('mic').classList.toggle('on',on);
+ $('mic').textContent=on?'⏸':'🎙️';
+ $('mic').setAttribute('aria-label',R.state==='idle'?'Iniciar gravação':on?'Pausar gravação':'Continuar gravação');
+ $('recstatus').textContent=R.state==='idle'?'Toque para gravar':on?'Gravando — toque para pausar':R.state==='paused'?'Pausado — toque para continuar':'Finalizando áudio…';
+ $('finishRecord').disabled=!(R.state==='recording'||R.state==='paused');
+ $('recWarn').textContent=R.muted&&on?'O sistema silenciou o microfone (ligação ou outro app). Aguarde ou encerre.':'';
+ tickTimer();
+}
+function tickTimer(){if(R.state!=='idle')$('counter').textContent=fmtClock(elapsed());else if(!review.blob)$('counter').textContent='00:00'}
+function startTimer(){stopTimer();R.timer=setInterval(tickTimer,250)}
+function stopTimer(){if(R.timer){clearInterval(R.timer);R.timer=null}}
+
+async function requestWake(){try{if('wakeLock' in navigator&&!R.wake){R.wake=await navigator.wakeLock.request('screen');R.wake.addEventListener('release',()=>{R.wake=null})}}catch(e){log('tela ligada indisponível: '+(e&&e.name))}}
+function releaseWake(){try{R.wake&&R.wake.release()}catch{}R.wake=null}
+function releaseStream(){if(R.stream){R.stream.getTracks().forEach(t=>{t.onended=t.onmute=t.onunmute=null;try{t.stop()}catch{}});R.stream=null}}
+
+function micTap(){
+ if(R.state==='idle')return startRec();
+ if(R.state==='recording'||R.state==='paused')return togglePause();
+}
+async function startRec(){
+ if(R.state!=='idle')return;
+ hideErr();
+ if(!window.isSecureContext||!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia||!window.MediaRecorder){showErr('Este navegador não suporta gravação ou a página não está em HTTPS.');return}
+ let stream;
+ try{stream=await navigator.mediaDevices.getUserMedia({audio:true})}
+ catch(e){showErr(e.name==='NotAllowedError'?'Permissão do microfone negada. No iPhone: toque em “aA” na barra do Safari › Ajustes do Site › Microfone › Permitir.':'Não foi possível acessar o microfone ('+(e.name||'erro')+').');return}
+ const mime=['audio/mp4','audio/webm;codecs=opus','audio/webm'].find(m=>MediaRecorder.isTypeSupported(m))||'';
+ let mr;
+ try{mr=new MediaRecorder(stream,mime?{mimeType:mime}:undefined)}
+ catch(e){stream.getTracks().forEach(t=>t.stop());showErr('Não foi possível iniciar o gravador: '+e.message);return}
+ const sid=Date.now();
+ Object.assign(R,{state:'recording',stream,mr,sid,idx:0,mime:mr.mimeType||mime||'audio/mp4',mem:[],acc:0,segStart:Date.now(),lost:false,muted:false,finalized:false,writeQ:Promise.resolve()});
+ tx('sessions','readwrite',s=>s.put({sid,mime:R.mime,startedAt:sid})).catch(e=>log('sessão não registrada: '+e));
+ mr.ondataavailable=onChunk;
+ mr.onerror=e=>{log('erro do gravador: '+((e.error&&e.error.name)||'desconhecido'));onTrackLost('erro do gravador')};
+ mr.onstop=()=>onStopped();
+ stream.getAudioTracks().forEach(t=>{
+  t.onended=()=>onTrackLost('microfone encerrado pelo sistema');
+  t.onmute=()=>{R.muted=true;log('microfone silenciado pelo sistema');renderRec()};
+  t.onunmute=()=>{R.muted=false;log('microfone voltou');renderRec()};
+ });
+ mr.start(1000);startTimer();requestWake();log('gravação iniciada ('+R.mime+')');renderRec();
+}
+function onChunk(e){
+ if(!e.data||!e.data.size)return;
+ const i=R.idx++,sid=R.sid;R.mem.push(e.data);
+ R.writeQ=R.writeQ.then(()=>tx('chunks','readwrite',s=>s.put({k:sid+':'+String(i).padStart(6,'0'),sid,i,blob:e.data}))).catch(err=>log('pedaço '+i+' não gravado: '+(err&&err.name)));
+}
+function togglePause(){
+ try{
+  if(R.state==='recording'){R.mr.pause();R.acc+=Date.now()-R.segStart;R.state='paused';releaseWake();log('pausado')}
+  else if(R.state==='paused'){R.mr.resume();R.segStart=Date.now();R.state='recording';requestWake();log('continuado')}
+ }catch(e){showErr('Não foi possível pausar/continuar: '+e.message)}
+ renderRec();
+}
+function stopRec(){
+ if(R.state!=='recording'&&R.state!=='paused')return;
+ if(R.state==='recording')R.acc+=Date.now()-R.segStart;
+ R.state='stopping';stopTimer();renderRec();
+ try{if(R.mr.state!=='inactive')R.mr.stop();else onStopped()}catch(e){log('erro ao encerrar: '+e);onStopped()}
+}
+function onTrackLost(reason){
+ if(R.state!=='recording'&&R.state!=='paused')return;
+ log('INTERRUPÇÃO: '+reason);R.lost=true;
+ if(R.state==='recording')R.acc+=Date.now()-R.segStart;
+ R.state='stopping';stopTimer();renderRec();
+ try{if(R.mr.state!=='inactive')R.mr.stop();else onStopped()}catch{onStopped()}
+}
+async function onStopped(){
+ if(R.finalized)return;R.finalized=true;
+ const sid=R.sid,mime=R.mime,ms=R.acc,lost=R.lost;
+ releaseStream();releaseWake();stopTimer();
+ await R.writeQ.catch(()=>{});
+ const blob=new Blob(R.mem,{type:(mime||'audio/mp4').split(';')[0]});
+ R.state='idle';R.mem=[];
+ if(!blob.size){showErr('Nenhum áudio foi capturado. Tente novamente.');cleanupSession(sid);renderRec();return}
+ setReview(blob,ms,sid,lost?'A gravação foi interrompida pelo sistema (ligação, outro app usando o microfone ou bloqueio). O trecho gravado foi preservado.':'');
+ log('gravação encerrada: '+fmtClock(ms)+', '+fmtMB(blob.size));
+}
+function setReview(blob,ms,sid,note){
+ if(review.url)URL.revokeObjectURL(review.url);
+ review.blob=blob;review.ms=ms;review.sid=sid;review.note=note||'';review.url=URL.createObjectURL(blob);
+ $('reviewAudio').src=review.url;$('reviewDur').textContent=fmtClock(ms)+' · '+fmtMB(blob.size);
+ $('reviewNote').textContent=review.note;$('reviewNote').style.display=review.note?'block':'none';
+ $('counter').textContent=fmtClock(ms);renderRec();
+}
+async function discardReview(){
+ if(!review.blob)return;
+ if(!confirm('Descartar esta gravação? O áudio será apagado e não poderá ser recuperado.'))return;
+ const sid=review.sid;
+ if(review.url)URL.revokeObjectURL(review.url);
+ review.blob=null;review.url=null;review.sid=null;$('reviewAudio').removeAttribute('src');$('titleInput').value='';$('noteInput').value='';
+ await cleanupSession(sid);log('gravação descartada');renderRec();checkOrphans();
+}
+async function saveIdea(){
+ if(!review.blob||review.blob.size===0){toast('Grave e encerre um áudio antes de salvar.');return}
+ const btn=$('saveBtn');if(btn.disabled)return;btn.disabled=true;btn.textContent='Salvando…';
+ const id=Date.now(),blob=review.blob;
+ try{
+  await putAudio(id,blob);
+  const back=await getAudio(id); // confirma que o arquivo foi realmente gravado
+  if(!back||back.size!==blob.size)throw new Error('O áudio não foi confirmado no armazenamento.');
+  ideas.unshift({id,title:$('titleInput').value.trim(),note:($('noteInput').value.trim()+(review.note?(($('noteInput').value.trim()?'\n':'')+'['+review.note+']'):'')).trim(),durationMs:review.ms,sizeBytes:blob.size,mime:blob.type,status:'Nova',category:'A classificar',history:[{at:new Date().toISOString(),event:'Ideia criada'}]});
+  try{persist()}catch(e){ideas.shift();await delAudio(id).catch(()=>{});throw e}
+  const sid=review.sid;
+  if(review.url)URL.revokeObjectURL(review.url);
+  review.blob=null;review.url=null;review.sid=null;$('reviewAudio').removeAttribute('src');$('titleInput').value='';$('noteInput').value='';
+  cleanupSession(sid);log('ideia salva: '+fmtMB(blob.size));
+  try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch{}
+  renderRec();openIdea(id);toast('Ideia salva com o áudio original.');
+ }catch(e){
+  log('FALHA AO SALVAR: '+(e&&e.message));
+  showErr('Não foi possível salvar: '+(e&&e.message)+' A gravação continua aqui; tente novamente.');
+ }finally{btn.disabled=false;btn.textContent='Salvar ideia'}
+}
+
+/* recuperação de gravação interrompida (app fechado, recarregado, travado) */
+async function checkOrphans(){
+ try{
+  if(R.state!=='idle'||review.blob)return;
+  const ss=(await tx('sessions','readonly',s=>s.getAll()))||[];
+  const b=$('recoverBanner');
+  if(!ss.length){b.classList.add('hidden');return}
+  const s=ss.sort((a,c)=>a.sid-c.sid)[ss.length-1];
+  b.innerHTML=`Há uma gravação de <strong>${new Date(s.sid).toLocaleString('pt-BR')}</strong> que não foi salva (o app pode ter sido fechado).<div class="row"><button class="minor-btn" onclick="recoverSession(${s.sid})">Recuperar</button><button class="minor-btn outline" onclick="dropSession(${s.sid})">Descartar</button></div>`;
+  b.classList.remove('hidden');
+ }catch(e){log('verificação de recuperação falhou: '+e)}
+}
+async function recoverSession(sid){
+ try{
+  const chunks=(await tx('chunks','readonly',s=>s.getAll(chunkRange(sid))))||[];
+  const ss=(await tx('sessions','readonly',s=>s.get(sid)))||{};
+  chunks.sort((a,c)=>a.i-c.i);
+  const blob=new Blob(chunks.map(c=>c.blob),{type:(ss.mime||'audio/mp4').split(';')[0]});
+  if(!blob.size){toast('Nada para recuperar.');await cleanupSession(sid);checkOrphans();return}
+  $('recoverBanner').classList.add('hidden');
+  setReview(blob,chunks.length*1000,sid,'Gravação recuperada após o app ser fechado. A duração é aproximada e o final pode estar cortado.');
+  log('gravação recuperada: '+chunks.length+' pedaços');
+ }catch(e){showErr('Falha ao recuperar: '+e.message)}
+}
+async function dropSession(sid){if(!confirm('Descartar essa gravação não salva?'))return;await cleanupSession(sid);log('sessão órfã descartada');checkOrphans()}
+
+/* ---------- detalhe ---------- */
+let savedUrl=null;
+async function openIdea(id){
+ current=id;const x=ideas.find(t=>t.id===id);if(!x)return;
+ $('dtTitle').textContent=ideaTitle(x);
+ $('dtTags').innerHTML=[fmtDate(x.id),fmtClock(x.durationMs||0),fmtMB(x.sizeBytes||0),x.status].map(t=>`<span class="pill">${esc(t)}</span>`).join('');
+ $('editTitle').value=x.title||'';$('editNote').value=x.note||'';$('statusSelect').value=x.status;
+ go('detalhe');
+ const player=$('savedAudio');
+ if(savedUrl){URL.revokeObjectURL(savedUrl);savedUrl=null}
+ player.pause();player.removeAttribute('src');
+ try{
+  const blob=await getAudio(id);
+  if(current!==id)return;
+  if(blob&&blob.size){savedUrl=URL.createObjectURL(blob);player.src=savedUrl;$('audioHolder').style.display='block';$('audioMissing').style.display='none'}
+  else{$('audioHolder').style.display='none';$('audioMissing').style.display='block';log('áudio ausente: '+id)}
+ }catch(e){toast('Não foi possível ler o áudio.');log('leitura do áudio falhou: '+e)}
+}
+function saveEdits(){
+ const x=ideas.find(t=>t.id===current);if(!x)return;
+ const prev={title:x.title,note:x.note};
+ x.title=$('editTitle').value.trim();x.note=$('editNote').value.trim();
+ try{persist();$('dtTitle').textContent=ideaTitle(x);toast('Alterações salvas.')}catch(e){x.title=prev.title;x.note=prev.note;toast(e.message)}
+}
+function updateStatus(v){
+ const x=ideas.find(t=>t.id===current);if(!x)return;
+ const old=x.status;x.status=v;(x.history=x.history||[]).push({at:new Date().toISOString(),event:'Status: '+old+' → '+v});
+ try{persist();toast('Status atualizado.')}catch(e){x.status=old;x.history.pop();$('statusSelect').value=old;toast(e.message)}
+}
+const fileName=x=>`ideia-${x.id}.${(x.mime||'').includes('mp4')?'m4a':'webm'}`;
+async function shareAudio(){
+ const x=ideas.find(t=>t.id===current);if(!x)return;
+ try{
+  const blob=await getAudio(x.id);if(!blob){toast('Áudio não encontrado.');return}
+  const f=new File([blob],fileName(x),{type:blob.type});
+  if(navigator.canShare&&navigator.canShare({files:[f]})){try{await navigator.share({files:[f],title:ideaTitle(x)});return}catch(e){if(e&&e.name==='AbortError')return}}
+  const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=fileName(x);document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);
+ }catch(e){toast('Falha ao exportar o áudio.');log('exportação falhou: '+e)}
+}
+async function copyMessage(dest){
+ const x=ideas.find(t=>t.id===current);if(!x)return;
+ const msg=`IDEIA — ASSISTENTE CLAUDENIR\nPara: ${dest}\nTítulo: ${ideaTitle(x)}\nData: ${fmtDate(x.id)}\nStatus: ${x.status}\nDuração do áudio: ${fmtClock(x.durationMs||0)}\nAnotação: ${x.note||'(sem anotação)'}\n\n(O áudio original será enviado separadamente.)`;
+ try{await navigator.clipboard.writeText(msg);toast('Texto copiado.')}catch{const a=document.createElement('textarea');a.value=msg;document.body.append(a);a.select();try{document.execCommand('copy');toast('Texto copiado.')}catch{toast('Não foi possível copiar.')}a.remove()}
+}
+async function deleteIdea(){
+ const x=ideas.find(t=>t.id===current);if(!x)return;
+ if(!confirm('Excluir esta ideia e o áudio original? Não há como desfazer.'))return;
+ try{
+  await delAudio(x.id);
+  const i=ideas.indexOf(x);ideas.splice(i,1);
+  try{persist()}catch(e){ideas.splice(i,0,x);throw e}
+  log('ideia excluída');toast('Ideia excluída.');go('biblioteca');
+ }catch(e){toast('Falha ao excluir: '+e.message)}
+}
+
+/* ---------- configurações, armazenamento, diagnóstico ---------- */
+async function renderConfig(){
+ $('themePreference').value=currentPreference;
+ $('stCount').textContent=String(ideas.length);
+ $('stAudio').textContent=fmtMB(ideas.reduce((a,x)=>a+(x.sizeBytes||0),0));
+ try{const e=await navigator.storage.estimate();$('stUsage').textContent=fmtMB(e.usage||0)+' de '+fmtMB(e.quota||0)}catch{$('stUsage').textContent='indisponível'}
+ try{$('stPersist').textContent=(await navigator.storage.persisted())?'ativa':'não garantida'}catch{$('stPersist').textContent='indisponível'}
+ $('dgVersion').textContent=VERSION;
+ $('dgStandalone').textContent=(window.navigator.standalone||matchMedia('(display-mode: standalone)').matches)?'sim':'não (abra pela Tela de Início)';
+ $('dgSecure').textContent=window.isSecureContext?'sim':'NÃO';
+ $('dgMime').textContent=window.MediaRecorder?(['audio/mp4','audio/webm;codecs=opus','audio/webm'].find(m=>MediaRecorder.isTypeSupported(m))||'nenhum'):'gravação indisponível';
+ $('dgSw').textContent=('serviceWorker' in navigator&&navigator.serviceWorker.controller)?'sim':'ainda não (recarregue uma vez)';
+ const lines=JSON.parse(lsGet(KEY_LOG)||'[]');$('logBox').textContent=lines.slice(-25).join('\n')||'(sem eventos registrados)';
+}
+async function copyDiag(){
+ const txt=['Assistente Claudenir '+VERSION,navigator.userAgent,'HTTPS: '+window.isSecureContext,'Ideias: '+ideas.length,'',...JSON.parse(lsGet(KEY_LOG)||'[]').slice(-60)].join('\n');
+ try{await navigator.clipboard.writeText(txt);toast('Diagnóstico copiado. Cole na conversa com o Claude.')}catch{toast('Não foi possível copiar automaticamente.')}
+}
+function clearLog(){lsSet(KEY_LOG,'[]');renderConfig()}
+async function shareAll(){
+ try{
+  const files=[];
+  for(const x of ideas){const b=await getAudio(x.id);if(b)files.push(new File([b],fileName(x),{type:b.type}))}
+  if(!files.length){toast('Nenhum áudio para compartilhar.');return}
+  if(navigator.canShare&&navigator.canShare({files})){try{await navigator.share({files,title:'Áudios — Assistente Claudenir'})}catch(e){if(e&&e.name!=='AbortError')toast('Falha ao compartilhar.')}}
+  else toast('Este navegador não compartilha vários arquivos de uma vez. Compartilhe um por um na página de cada ideia.');
+ }catch(e){toast('Falha ao preparar o backup.');log('backup falhou: '+e)}
+}
+async function wipeAll(){
+ if(!confirm('Apagar TODAS as ideias e áudios deste aparelho? Não há como desfazer.'))return;
+ if(!confirm('Tem certeza? Esta é a última confirmação.'))return;
+ try{
+  for(const x of ideas)await delAudio(x.id).catch(()=>{});
+  ideas=[];persist();
+  const d=await db();await Promise.all(['chunks','sessions'].map(n=>new Promise(r=>{const t=d.transaction(n,'readwrite');t.objectStore(n).clear();t.oncomplete=t.onerror=()=>r()})));
+  log('todos os dados apagados');toast('Dados apagados.');go('inicio');
+ }catch(e){toast('Falha ao apagar: '+e.message)}
+}
+
+/* ---------- aviso ao sair e segundo plano ---------- */
+window.addEventListener('beforeunload',e=>{if(recording()||review.blob){e.preventDefault();e.returnValue=''}});
+document.addEventListener('visibilitychange',()=>{
+ if(document.hidden){if(recording())log('app foi para segundo plano durante a gravação');return}
+ applyTheme();
+ if(R.state==='recording'){requestWake();if(R.mr&&R.mr.state==='inactive')onTrackLost('gravador parou em segundo plano')}
+});
+
+/* ---------- aviso rápido ---------- */
+let toastTimer;function toast(t){const e=$('toast');e.textContent=t;e.style.display='block';clearTimeout(toastTimer);toastTimer=setTimeout(()=>e.style.display='none',3200)}
+
+/* ---------- tema (automático por padrão, claro, escuro, por horário) ---------- */
+const scheme=window.matchMedia('(prefers-color-scheme: dark)');
+let currentPreference='system';
+function resolveTheme(p){if(p==='system')return scheme.matches?'dark':'light';if(p==='schedule'){const h=new Date().getHours();return(h>=18||h<6)?'dark':'light'}return p}
+function applyTheme(){document.body.classList.toggle('theme-light',resolveTheme(currentPreference)==='light');const m=document.querySelector('meta[name=theme-color]');if(m)m.content=resolveTheme(currentPreference)==='light'?'#fcfdff':'#16191f'}
+function setThemePreference(m){currentPreference=m;lsSet(KEY_THEME,m);applyTheme()}
+function initTheme(){const s=lsGet(KEY_THEME);currentPreference=['system','schedule','light','dark'].includes(s)?s:'system';applyTheme()}
+scheme.addEventListener&&scheme.addEventListener('change',()=>{if(currentPreference==='system')applyTheme()});
+setInterval(()=>{if(currentPreference==='schedule')applyTheme()},60000);
+
+/* ---------- início ---------- */
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').then(()=>log('modo offline pronto')).catch(e=>log('service worker: '+e))}
+initTheme();renderHome();renderRec();checkOrphans();
+</script>
+</body>
+</html>
